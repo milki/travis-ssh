@@ -3,6 +3,10 @@ before_install:
     - sudo adduser --shell /bin/sh --disabled-password --gecos Frodo frodo
     - sudo adduser --shell /bin/sh --disabled-password --gecos Sam sam
     - sudo adduser --shell /bin/sh --disabled-password --gecos Gollum gollum
+    - ssh-keyscan -t rsa localhost | sudo tee /etc/ssh/ssh_known_hosts
 
 script:
     - status ssh
+    - ssh-keygen -t rsa -f ~/.ssh/id_rsa -N "" -q
+    - cat ~/.ssh/id_rsa.pub >>~/.ssh/authorized_keys
+    - ssh -v localhost hostname -f
